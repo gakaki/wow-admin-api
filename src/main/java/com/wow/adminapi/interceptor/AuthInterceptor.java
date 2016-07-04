@@ -1,34 +1,28 @@
 package com.wow.adminapi.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.wow.adminapi.constant.ApiConstant;
 import com.wow.user.service.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 拦截未登录的用户
  */
 @Configuration
-@ComponentScan
-@EnableAutoConfiguration
-public class MustLoginInterceptor implements HandlerInterceptor {
+public class AuthInterceptor implements HandlerInterceptor {
 
-    private static final Logger logger = LoggerFactory.getLogger(MustLoginInterceptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthInterceptor.class);
     @Autowired
     private SessionService sessionService;
-//
-//    public void setSessionService(SessionService sessionService) {
-//        this.sessionService = sessionService;
-//    }
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -37,6 +31,12 @@ public class MustLoginInterceptor implements HandlerInterceptor {
         String token = getSessionToken(request, response);
         token = "39b0b50d-8838-496e-93cd-6e7f87dea1e6";//TODO: hard code here
         byte loginChannel = getLoginChannel(request, response);
+
+        if (sessionService == null) {//解决service为null无法注入问题
+            logger.info("sessionService is null!!!");
+            BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+            sessionService = (SessionService) factory.getBean("sessionService");
+        }
 
         //check whether token is valid, by search it from redis or mysql
         if (!sessionService.isValidSessionToken(token,loginChannel)) {

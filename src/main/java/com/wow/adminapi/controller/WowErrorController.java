@@ -1,5 +1,7 @@
 package com.wow.adminapi.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -15,6 +17,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/error")
 public class WowErrorController implements ErrorController {
+
+    private static final Logger logger = LoggerFactory.getLogger(WowErrorController.class);
 
     private final ErrorAttributes errorAttributes;
 
@@ -32,6 +36,7 @@ public class WowErrorController implements ErrorController {
     @RequestMapping
     public Map<String, Object> error(HttpServletRequest aRequest) {
         Map<String, Object> body = getErrorAttributes(aRequest, getTraceParameter(aRequest));
+        logger.info("error attributes:" + body);
         String trace = (String) body.get("trace");
         if (trace != null) {
             String[] lines = trace.split("\n\t");
