@@ -11,7 +11,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@EnableScheduling
 public class AdminApiApplication implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminApiApplication.class);
@@ -26,6 +25,6 @@ public class AdminApiApplication implements CommandLineRunner {
      * @param args
      */
     public void run(String... args) {
-        logger.info("Mobile api is started and be ready to accept requests from app(iOS/Android).");
+        logger.info("Admin api is started and be ready to accept requests from admin-web.");
     }
 }

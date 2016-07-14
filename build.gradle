@@ -1,21 +1,28 @@
 buildscript {
     repositories {
         maven {
-            url "${nexusUrl}/repository/maven-public/"
+            url "${nexusUrl}/content/groups/public/"
         }
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.5.RELEASE")
+        classpath 'org.hidetake:gradle-ssh-plugin:2.4.0'
     }
 }
 
 group 'com.wow'
 version '1.0-SNAPSHOT'
 
+configurations {
+    mybatisGenerator
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'spring-boot'
 apply plugin: 'maven-publish'
+apply plugin: 'org.hidetake.ssh'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -23,17 +30,17 @@ targetCompatibility = 1.8
 repositories {
     mavenLocal()
     maven {
-        url "${nexusUrl}/repository/maven-public/"
+        url "${nexusUrl}/content/groups/public/"
     }
 }
 
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "${nexusUrl}/repository/maven-releases/") {
+            repository(url: "${nexusUrl}/content/repositories/releases") {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
-            snapshotRepository(url: "${nexusUrl}/repository/maven-snapshots") {
+            snapshotRepository(url: "${nexusUrl}/content/repositories/snapshots") {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
         }
@@ -51,6 +58,11 @@ javadoc {
 }
 
 dependencies {
+
+    mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.2'
+    mybatisGenerator 'mysql:mysql-connector-java:5.1.35'
+    compile 'org.mybatis.generator:mybatis-generator:1.3.2'
+
     compile 'org.springframework.boot:spring-boot-starter-web'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
@@ -69,6 +81,8 @@ dependencies {
     compile 'com.wow:stock-service:1.0-SNAPSHOT'
     compile 'com.wow:marketing-service:1.0-SNAPSHOT'
     compile 'com.wow:page-service:1.0-SNAPSHOT'
+    compile 'com.wow:common-util:1.0-SNAPSHOT'
+    compile "com.taobao:api:1.0"
 
     testCompile 'junit:junit:4.11'
 }
@@ -79,5 +93,57 @@ task wrapper(type: Wrapper) {
 
 bootRun {
     addResources = true
+}
+
+
+
+
+def getDbProperties = {
+    def properties = new Properties()
+    file("src/main/resources/generator/mysql.properties").withInputStream { inputStream ->
+        properties.load(inputStream)
+    }
+    properties;
+}
+
+bootRun {
+    addResources = true
+}
+
+task dbgen << {
+
+    def properties = getDbProperties()
+
+    ant.properties['targetProject'] = projectDir.path
+    ant.properties['driverClass'] = properties.getProperty("jdbc.driverClassName")
+    ant.properties['connectionURL'] = properties.getProperty("jdbc.url")
+    ant.properties['userId'] = properties.getProperty("jdbc.user")
+    ant.properties['password'] = properties.getProperty("jdbc.pass")
+    ant.properties['src_main_java'] = sourceSets.main.java.srcDirs[0].path
+    ant.properties['src_main_resources'] = sourceSets.main.resources.srcDirs[0].path
+    ant.properties['modelPackage'] = this.modelPackage
+    ant.properties['mapperPackage'] = this.mapperPackage
+    ant.properties['sqlMapperPackage'] = this.sqlMapperPackage
+
+    ant.taskdef(
+            name: 'mbgenerator',
+            classname: 'org.mybatis.generator.ant.GeneratorAntTask',
+            classpath: configurations.mybatisGenerator.asPath
+    )
+    ant.mbgenerator(overwrite: false,
+            configfile: 'src/main/resources/generator/generatorConfig.xml', verbose: true) {
+        propertyset {
+            propertyref(name: 'targetProject')
+            propertyref(name: 'userId')
+            propertyref(name: 'driverClass')
+            propertyref(name: 'connectionURL')
+            propertyref(name: 'password')
+            propertyref(name: 'src_main_java')
+            propertyref(name: 'src_main_resources')
+            propertyref(name: 'modelPackage')
+            propertyref(name: 'mapperPackage')
+            propertyref(name: 'sqlMapperPackage')
+        }
+    }
 }
 

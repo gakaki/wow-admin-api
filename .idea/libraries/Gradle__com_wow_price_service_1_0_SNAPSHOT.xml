@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: com.wow:price-service:1.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/wow/price-service/1.0-SNAPSHOT/price-service-1.0-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

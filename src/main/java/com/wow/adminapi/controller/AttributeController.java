@@ -3,42 +3,30 @@ package com.wow.adminapi.controller;
 
 import com.wow.attribute.model.Attribute;
 import com.wow.attribute.service.AttributeService;
-import com.wow.adminapi.dto.ApiResponse;
-import com.wow.adminapi.exception.ApiErrorCode;
-import com.wow.adminapi.util.ErrorRespUtil;
-import com.wow.adminapi.util.ValidatorUtil;
+import com.wow.common.response.ApiResponse;
+import com.wow.common.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class AttributeController {
+public class
+AttributeController {
 
     private static final Logger logger = LoggerFactory.getLogger(AttributeController.class);
 
     @Autowired
     private AttributeService attributeService;
 
-    @RequestMapping(value = "/v1.0/attributes", method = RequestMethod.POST)
+    @RequestMapping(value = "/v1/attributes", method = RequestMethod.POST)
     public ApiResponse createAttribute(@Validated @RequestBody Attribute newAttribute, BindingResult result) {
         ApiResponse apiResponse = new ApiResponse();
         if (result.hasErrors()) {
-            ErrorRespUtil.setError(apiResponse, "40000");
-            Map<String, String> map = ValidatorUtil.getErrors(result);
-            apiResponse.setData(map);
+            apiResponse.setResCode("40000");
+            apiResponse.setResMsg(ValidatorUtil.getError(result));
         } else {
             logger.info("start to add attribute:" + newAttribute);
             int createdCnt = attributeService.createAttribute(newAttribute);
@@ -49,12 +37,12 @@ public class AttributeController {
         return apiResponse;
     }
 
-    @RequestMapping(value = "/v1.0/attributes/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/attributes/{id}", method = RequestMethod.GET)
     public ApiResponse findAttribute(@PathVariable Integer id) {
         ApiResponse apiResponse = new ApiResponse();
         logger.info("get attribute, id=" + id);
         if(id==null || id <=0 ) {
-            ErrorRespUtil.setError(apiResponse, "40401");
+//            responseUtil.setResponse(apiResponse, "40401");
         } else {
             try {
                 Attribute attribute = attributeService.getAttributeById(id);
@@ -77,7 +65,7 @@ public class AttributeController {
         return apiResponse;
     }
 
-    @RequestMapping(value = "/v1.0/attributes", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/attributes", method = RequestMethod.GET)
     public ApiResponse findAttributes() {
         logger.info("get all attributes");
         ApiResponse apiResponse = new ApiResponse();
@@ -92,7 +80,7 @@ public class AttributeController {
         ApiResponse apiResponse = new ApiResponse();
         logger.info("get attribute, id=" + id);
         if(id==null || id <=0 ) {
-            ErrorRespUtil.setError(apiResponse, "40401");
+//            responseUtil.setResponse(apiResponse, "40401");
         } else {
             try {
                 Attribute attribute = attributeService.getAttributeById(id);
@@ -115,7 +103,7 @@ public class AttributeController {
         return apiResponse;
     }
 
-    @RequestMapping(value = "/v1.0/attributes/{id}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/v1/attributes/{id}", method = RequestMethod.PATCH)
     public ApiResponse updateAttributeById(@RequestBody Attribute updatedAttribute, @PathVariable Integer id) {
         ApiResponse apiResponse = new ApiResponse();
         logger.info("update attribute, id=" + id);
@@ -129,7 +117,7 @@ public class AttributeController {
         return apiResponse;
     }
 
-    @RequestMapping(value = "/v1.0/attributes/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/v1/attributes/{id}", method = RequestMethod.DELETE)
     public ApiResponse deleteAttribute(@PathVariable Integer id) {
         ApiResponse apiResponse = new ApiResponse();
         logger.info("delete attribute, id=" + id);
