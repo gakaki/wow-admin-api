@@ -159,7 +159,7 @@ public class EmployeeController extends BaseController {
         return apiResponse;
     }
 
-    @RequestMapping(value = "/v1/employee/is-nickname-existed", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/employee/is-username-existed", method = RequestMethod.GET)
     public ApiResponse isExistedEmployeeByUserName(ApiRequest apiRequest) {
         ApiResponse apiResponse = new ApiResponse();
         EmployeeCheckRequest employeeCheckRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), EmployeeCheckRequest.class);
@@ -170,7 +170,7 @@ public class EmployeeController extends BaseController {
         }
 
         try {
-            EmployeeCheckResponse employeeCheckResponse = employeeService.isExistedEmployeeByUserName(employeeCheckRequest.getNickName());
+            EmployeeCheckResponse employeeCheckResponse = employeeService.isExistedEmployeeByUserName(employeeCheckRequest.getUserName());
             //如果处理失败 则返回错误信息
             if (!isServiceCallSuccess(employeeCheckResponse.getResCode())) {
                 setServiceErrorResponse(apiResponse, employeeCheckResponse);
@@ -178,7 +178,7 @@ public class EmployeeController extends BaseController {
                 apiResponse.setData(employeeCheckResponse.isExistedEmployee());
             }
         } catch (Exception e) {
-            logger.error("根据昵称判断用户是否存在发生错误---" + e);
+            logger.error("根据用户名判断用户是否存在发生错误---" + e);
             setInternalErrorResponse(apiResponse);
         }
 
