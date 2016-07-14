@@ -65,4 +65,14 @@ public class BaseController {
         apiResponse.setResMsg(ErrorCodeUtil.getErrorMsg(ErrorCodeConstant.INTERNAL_ERROR));
     }
 
+    /**
+     * 移除响应类中的重复错误码和错误信息
+     *
+     * @param commonResponse
+     */
+    public void removeDuplicateResponse(CommonResponse commonResponse) {
+        commonResponse.setResCode(null);
+        commonResponse.setResMsg(null);
+    }
+
 }

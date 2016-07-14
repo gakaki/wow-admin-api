@@ -96,18 +96,15 @@ public class EmployeeSessionServiceImpl implements EmployeeSessionService {
             employeeLoginLog.setSessionToken(sessionToken);
             employeeLoginLogMapper.insert(employeeLoginLog);
 
-//            loginResponse.setUserName(loginRequest.getUserName());
-//            loginResponse.setValidUser(true);
-//            loginResponse.setErrorMsg(null);
-            loginResponse.setEmployeeSession(employeeSession);
+            loginResponse.setEmployeeId(employee.getId());
+            loginResponse.setRealName(employee.getRealName());
+            loginResponse.setSessionToken(sessionToken);
+            loginResponse.setUserName(employee.getUserName());
+
         } else {
 
             loginResponse.setResCode("40101");
             loginResponse.setResMsg(ErrorCodeUtil.getErrorMsg("40101"));
-//            loginResponse.setUserName(loginRequest.getUserName());
-//            loginResponse.setValidUser(false);
-//            loginResponse.setErrorMsg("用户名和密码不匹配,请重新输入");
-//            loginResponse.setEmployeeSession(null);
         }
         return loginResponse;
     }

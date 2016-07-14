@@ -53,7 +53,8 @@ public class SessionController extends BaseController {
             if (!isServiceCallSuccess(loginResponse.getResCode())) {
                 setServiceErrorResponse(apiResponse, loginResponse);
             } else {
-                apiResponse.setData(loginResponse.getEmployeeSession());
+                removeDuplicateResponse(loginResponse);
+                apiResponse.setData(loginResponse);
             }
         } catch (Exception e) {
             logger.error("login发生错误---" + e);
