@@ -13,8 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class
-AttributeController {
+public class AttributeController {
 
     private static final Logger logger = LoggerFactory.getLogger(AttributeController.class);
 
