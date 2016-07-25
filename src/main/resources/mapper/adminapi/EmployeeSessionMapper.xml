@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wow.adminapi.mapper.EmployeeSessionMapper" >
+  <resultMap id="BaseResultMap" type="com.wow.adminapi.model.EmployeeSession" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="session_token" property="sessionToken" jdbcType="VARCHAR" />
+    <result column="user_agent_info" property="userAgentInfo" jdbcType="VARCHAR" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="last_login_ip" property="lastLoginIp" jdbcType="BIGINT" />
+    <result column="last_refresh_time" property="lastRefreshTime" jdbcType="TIMESTAMP" />
+    <result column="is_logout" property="isLogout" jdbcType="BIT" />
+    <result column="logout_time" property="logoutTime" jdbcType="TIMESTAMP" />
+    <result column="is_active" property="isActive" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, employee_id, session_token, user_agent_info, last_login_time, last_login_ip, 
+    last_refresh_time, is_logout, logout_time, is_active
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.wow.adminapi.model.EmployeeSessionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from employee_session
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_session
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee_session
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wow.adminapi.model.EmployeeSessionExample" >
+    delete from employee_session
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wow.adminapi.model.EmployeeSession" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into employee_session (employee_id, session_token, user_agent_info, 
+      last_login_time, last_login_ip, last_refresh_time, 
+      is_logout, logout_time, is_active
+      )
+    values (#{employeeId,jdbcType=INTEGER}, #{sessionToken,jdbcType=VARCHAR}, #{userAgentInfo,jdbcType=VARCHAR}, 
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=BIGINT}, #{lastRefreshTime,jdbcType=TIMESTAMP}, 
+      #{isLogout,jdbcType=BIT}, #{logoutTime,jdbcType=TIMESTAMP}, #{isActive,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wow.adminapi.model.EmployeeSession" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into employee_session
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="sessionToken != null" >
+        session_token,
+      </if>
+      <if test="userAgentInfo != null" >
+        user_agent_info,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
+      <if test="lastLoginIp != null" >
+        last_login_ip,
+      </if>
+      <if test="lastRefreshTime != null" >
+        last_refresh_time,
+      </if>
+      <if test="isLogout != null" >
+        is_logout,
+      </if>
+      <if test="logoutTime != null" >
+        logout_time,
+      </if>
+      <if test="isActive != null" >
+        is_active,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionToken != null" >
+        #{sessionToken,jdbcType=VARCHAR},
+      </if>
+      <if test="userAgentInfo != null" >
+        #{userAgentInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null" >
+        #{lastLoginIp,jdbcType=BIGINT},
+      </if>
+      <if test="lastRefreshTime != null" >
+        #{lastRefreshTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLogout != null" >
+        #{isLogout,jdbcType=BIT},
+      </if>
+      <if test="logoutTime != null" >
+        #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wow.adminapi.model.EmployeeSessionExample" resultType="java.lang.Integer" >
+    select count(*) from employee_session
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update employee_session
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.employeeId != null" >
+        employee_id = #{record.employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sessionToken != null" >
+        session_token = #{record.sessionToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAgentInfo != null" >
+        user_agent_info = #{record.userAgentInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastLoginTime != null" >
+        last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastLoginIp != null" >
+        last_login_ip = #{record.lastLoginIp,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastRefreshTime != null" >
+        last_refresh_time = #{record.lastRefreshTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isLogout != null" >
+        is_logout = #{record.isLogout,jdbcType=BIT},
+      </if>
+      <if test="record.logoutTime != null" >
+        logout_time = #{record.logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isActive != null" >
+        is_active = #{record.isActive,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update employee_session
+    set id = #{record.id,jdbcType=INTEGER},
+      employee_id = #{record.employeeId,jdbcType=INTEGER},
+      session_token = #{record.sessionToken,jdbcType=VARCHAR},
+      user_agent_info = #{record.userAgentInfo,jdbcType=VARCHAR},
+      last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      last_login_ip = #{record.lastLoginIp,jdbcType=BIGINT},
+      last_refresh_time = #{record.lastRefreshTime,jdbcType=TIMESTAMP},
+      is_logout = #{record.isLogout,jdbcType=BIT},
+      logout_time = #{record.logoutTime,jdbcType=TIMESTAMP},
+      is_active = #{record.isActive,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wow.adminapi.model.EmployeeSession" >
+    update employee_session
+    <set >
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionToken != null" >
+        session_token = #{sessionToken,jdbcType=VARCHAR},
+      </if>
+      <if test="userAgentInfo != null" >
+        user_agent_info = #{userAgentInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null" >
+        last_login_ip = #{lastLoginIp,jdbcType=BIGINT},
+      </if>
+      <if test="lastRefreshTime != null" >
+        last_refresh_time = #{lastRefreshTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLogout != null" >
+        is_logout = #{isLogout,jdbcType=BIT},
+      </if>
+      <if test="logoutTime != null" >
+        logout_time = #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wow.adminapi.model.EmployeeSession" >
+    update employee_session
+    set employee_id = #{employeeId,jdbcType=INTEGER},
+      session_token = #{sessionToken,jdbcType=VARCHAR},
+      user_agent_info = #{userAgentInfo,jdbcType=VARCHAR},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      last_login_ip = #{lastLoginIp,jdbcType=BIGINT},
+      last_refresh_time = #{lastRefreshTime,jdbcType=TIMESTAMP},
+      is_logout = #{isLogout,jdbcType=BIT},
+      logout_time = #{logoutTime,jdbcType=TIMESTAMP},
+      is_active = #{isActive,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
