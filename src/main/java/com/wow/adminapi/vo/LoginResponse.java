@@ -9,6 +9,8 @@ import com.wow.common.response.CommonResponse;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class LoginResponse extends CommonResponse {
 
+    /**  */
+    private static final long serialVersionUID = 1L;
     private Integer employeeId;
     private String sessionToken;
     private String userName;

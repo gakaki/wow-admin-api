@@ -9,6 +9,9 @@ import java.util.Date;
  */
 public class EmployeeUpdateRequest extends ApiRequest {
 
+    /**  */
+    private static final long serialVersionUID = 1L;
+
     private Integer id;
 
     private String userName;

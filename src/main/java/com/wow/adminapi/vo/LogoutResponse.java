@@ -7,6 +7,8 @@ import com.wow.common.response.CommonResponse;
  */
 public class LogoutResponse extends CommonResponse {
 
+    /**  */
+    private static final long serialVersionUID = 1L;
     private boolean success;
 
     public boolean isSuccess() {

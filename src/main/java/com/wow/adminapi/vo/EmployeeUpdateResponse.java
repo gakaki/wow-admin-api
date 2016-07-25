@@ -8,6 +8,8 @@ import com.wow.common.response.CommonResponse;
  */
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class EmployeeUpdateResponse extends CommonResponse {
+    /**  */
+    private static final long serialVersionUID = 1L;
     private boolean isSuccess;
 
     public boolean isSuccess() {

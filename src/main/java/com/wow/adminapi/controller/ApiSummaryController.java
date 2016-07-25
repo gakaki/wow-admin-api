@@ -1,14 +1,11 @@
 package com.wow.adminapi.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by zhengzhiqing on 16/6/22.
@@ -16,7 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/")
 public class ApiSummaryController {
-    private static final Logger logger = LoggerFactory.getLogger(ApiSummaryController.class);
+    //private static final Logger logger = LoggerFactory.getLogger(ApiSummaryController.class);
 
     @RequestMapping(method = RequestMethod.GET)
     public Map<String,String> findAllApis() {

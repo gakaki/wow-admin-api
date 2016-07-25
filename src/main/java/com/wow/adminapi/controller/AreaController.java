@@ -1,16 +1,15 @@
 package com.wow.adminapi.controller;
 
-import com.wow.user.model.Area;
-import com.wow.user.service.AreaService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.wow.user.model.Area;
+import com.wow.user.service.AreaService;
 
 /**
  * Created by zhengzhiqing on 16/7/10.
@@ -18,7 +17,7 @@ import java.util.List;
 @RestController
 public class AreaController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AreaController.class);
+    //private static final Logger logger = LoggerFactory.getLogger(AreaController.class);
 
     @Autowired
     private AreaService areaService;

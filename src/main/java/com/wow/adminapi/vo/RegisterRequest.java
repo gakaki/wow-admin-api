@@ -2,12 +2,13 @@ package com.wow.adminapi.vo;
 
 import com.wow.common.request.ApiRequest;
 
-import java.util.Date;
-
 /**
  * Created by zhengzhiqing on 16/7/6.
  */
 public class RegisterRequest extends ApiRequest {
+
+    /**  */
+    private static final long serialVersionUID = 1L;
 
     private String userName;
 

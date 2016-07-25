@@ -1,18 +1,9 @@
 package com.wow.adminapi.controller;
 
-import com.wow.common.request.ApiRequest;
-import com.wow.common.response.ApiResponse;
-import com.wow.common.response.CommonResponse;
-import com.wow.common.util.ErrorCodeUtil;
-import com.wow.common.util.JsonUtil;
-import com.wow.common.util.StringUtil;
-import com.wow.common.util.ValidatorUtil;
-import com.wow.price.service.PriceService;
-import com.wow.product.service.BrandService;
-import com.wow.product.service.DesignerService;
-import com.wow.product.service.ProductSerialService;
-import com.wow.product.service.ProductService;
-import com.wow.product.vo.request.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +12,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import com.wow.common.request.ApiRequest;
+import com.wow.common.response.ApiResponse;
+import com.wow.common.response.CommonResponse;
+import com.wow.common.util.ErrorCodeUtil;
+import com.wow.common.util.JsonUtil;
+import com.wow.common.util.StringUtil;
+import com.wow.common.util.ValidatorUtil;
+import com.wow.product.service.ProductService;
+import com.wow.product.vo.request.ColorSpecVo;
+import com.wow.product.vo.request.DesignerVo;
+import com.wow.product.vo.request.ProductCreateRequest;
+import com.wow.product.vo.request.ProductImgVo;
+import com.wow.product.vo.request.SpecVo;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -34,19 +35,19 @@ public class ProductController extends BaseController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private ProductSerialService productSerialService;
-
-    @Autowired
-    private PriceService priceService;
-
-    @Autowired
-    private BrandService brandService;
-
-    @Autowired
-    private DesignerService designerService;
-
-    private static final Integer productPrimaryImgCountLimit = 5;
+//    @Autowired
+//    private ProductSerialService productSerialService;
+//
+//    @Autowired
+//    private PriceService priceService;
+//
+//    @Autowired
+//    private BrandService brandService;
+//
+//    @Autowired
+//    private DesignerService designerService;
+//
+//    private static final Integer productPrimaryImgCountLimit = 5;
 
     public static void test(String[] args) {
         ProductCreateRequest request = new ProductCreateRequest();
