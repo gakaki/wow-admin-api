@@ -33,6 +33,9 @@ repositories {
     maven {
         url "${nexusUrl}/content/groups/public/"
     }
+    maven {
+        url  "http://jcenter.bintray.com"
+    }
 }
 
 uploadArchives {
