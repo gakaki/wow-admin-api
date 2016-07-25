@@ -7,6 +7,9 @@ import com.wow.common.request.ApiRequest;
  */
 public class EmployeeCheckRequest extends ApiRequest {
 
+    /**  */
+    private static final long serialVersionUID = 1L;
+
     private String userName;
 
     private String realName;

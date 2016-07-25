@@ -6,6 +6,8 @@ import com.wow.common.request.ApiRequest;
  * Created by zhengzhiqing on 16/7/14.
  */
 public class LogoutRequest extends ApiRequest {
+    /**  */
+    private static final long serialVersionUID = 1L;
     private int employeeId;
 
     public int getEmployeeId() {

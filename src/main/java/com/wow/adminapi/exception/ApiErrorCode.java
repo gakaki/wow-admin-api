@@ -1,10 +1,5 @@
 package com.wow.adminapi.exception;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
 import java.util.HashMap;
 import java.util.Map;
 

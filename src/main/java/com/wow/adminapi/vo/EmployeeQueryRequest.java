@@ -6,6 +6,8 @@ import com.wow.common.request.ApiRequest;
  * Created by zhengzhiqing on 16/7/6.
  */
 public class EmployeeQueryRequest extends ApiRequest {
+    /**  */
+    private static final long serialVersionUID = 1L;
     private int employeeId;
     private String userName;
     private String realName;
