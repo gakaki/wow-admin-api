@@ -10,7 +10,7 @@ import com.wow.adminapi.vo.LoginRequest;
 import com.wow.adminapi.vo.LoginResponse;
 import com.wow.adminapi.vo.LogoutResponse;
 import com.wow.common.util.ErrorCodeUtil;
-import com.wow.user.util.IpConvertUtil;
+import com.wow.common.util.IpConvertUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

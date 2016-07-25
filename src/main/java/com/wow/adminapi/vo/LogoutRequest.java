@@ -1,11 +1,11 @@
 package com.wow.adminapi.vo;
 
-import com.wow.common.request.CommonRequest;
+import com.wow.common.request.ApiRequest;
 
 /**
  * Created by zhengzhiqing on 16/7/14.
  */
-public class LogoutRequest extends CommonRequest {
+public class LogoutRequest extends ApiRequest {
     private int employeeId;
 
     public int getEmployeeId() {
