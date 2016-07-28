@@ -44,7 +44,7 @@ public class AreaController extends  BaseController{
     }
 
     /**
-     * 查找次级区域
+     * 查找区域
      * @param apiRequest
      * @return
      */
@@ -57,17 +57,6 @@ public class AreaController extends  BaseController{
             return apiResponse;
         }
         apiResponse.setData(areaService.getNextLevelArea(areaRequest.getId()));
-        return apiResponse;
-    }
-
-    /**
-     * 查找一级区域
-     * @return
-     */
-    @RequestMapping(value = "/v1/areas/queryFirstLevel", method = RequestMethod.GET)
-    public ApiResponse queryFirstLevelArea() {
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(areaService.getFirstLevelArea());
         return apiResponse;
     }
 }
