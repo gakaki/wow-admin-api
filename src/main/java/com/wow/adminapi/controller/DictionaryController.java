@@ -136,7 +136,6 @@ public class DictionaryController extends BaseController{
         		List<DictionaryVo> dictionaryVoList = new ArrayList<DictionaryVo>();
         		for(Dictionary dictionary:dictionaryList){
         			DictionaryVo dv = new DictionaryVo();
-        			dv.setId(dictionary.getId());
         			dv.setKeyValue(dictionary.getKeyValue());
         			dv.setKeyName(dictionary.getKeyName());
         			
