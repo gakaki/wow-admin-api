@@ -17,6 +17,7 @@ import com.wow.user.service.AreaService;
  * Created by zhengzhiqing on 16/7/10.
  */
 @RestController
+@CrossOrigin(maxAge = 3600)
 public class AreaController extends  BaseController{
 
     //private static final Logger logger = LoggerFactory.getLogger(AreaController.class);
