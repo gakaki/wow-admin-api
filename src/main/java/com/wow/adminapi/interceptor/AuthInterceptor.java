@@ -1,12 +1,8 @@
 package com.wow.adminapi.interceptor;
 
-import com.wow.adminapi.constant.ApiConstant;
-import com.wow.adminapi.constant.ErrorCodeConstant;
-import com.wow.common.response.ApiResponse;
-import com.wow.common.util.ErrorCodeUtil;
-import com.wow.common.util.JsonUtil;
-import com.wow.user.service.SessionService;
-import com.wow.user.vo.response.TokenValidateResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.wow.adminapi.constant.ApiConstant;
+import com.wow.user.service.SessionService;
 
 /**
  * 拦截未登录的用户
@@ -31,30 +27,30 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
         logger.info("AuthInterceptor preHandle:" + request);
-        ApiResponse apiResponse = new ApiResponse();
-        String token = getSessionToken(request, response);
-        byte loginChannel = getLoginChannel(request, response);
-
-        try {
-            //check whether token is valid, by search it from redis or mysql
-            TokenValidateResponse tokenValidateResponse = sessionService.isValidSessionToken(token,loginChannel);
-            if (tokenValidateResponse==null || !tokenValidateResponse.isValid()) {
-                logger.warn("session token is invalid:" + token);
-                apiResponse.setResCode("10000");
-                apiResponse.setResMsg(ErrorCodeUtil.getErrorMsg("10000"));
-                response.setContentType("application/json");
-                response.getWriter().write(JsonUtil.pojo2Json(apiResponse));
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("查询Token发生错误---" + e);
-            apiResponse.setResCode(ErrorCodeConstant.INTERNAL_ERROR);
-            apiResponse.setResMsg(ErrorCodeUtil.getErrorMsg(ErrorCodeConstant.INTERNAL_ERROR));
-            response.setContentType("application/json");
-            response.getWriter().write(JsonUtil.pojo2Json(apiResponse));
-            return false;
-        }
+        //        ApiResponse apiResponse = new ApiResponse();
+        //        String token = getSessionToken(request, response);
+        //        byte loginChannel = getLoginChannel(request, response);
+        //
+        //        try {
+        //            //check whether token is valid, by search it from redis or mysql
+        //            TokenValidateResponse tokenValidateResponse = sessionService.isValidSessionToken(token,loginChannel);
+        //            if (tokenValidateResponse==null || !tokenValidateResponse.isValid()) {
+        //                logger.warn("session token is invalid:" + token);
+        //                apiResponse.setResCode("10000");
+        //                apiResponse.setResMsg(ErrorCodeUtil.getErrorMsg("10000"));
+        //                response.setContentType("application/json");
+        //                response.getWriter().write(JsonUtil.pojo2Json(apiResponse));
+        //                return false;
+        //            }
+        //        } catch (Exception e) {
+        //            e.printStackTrace();
+        //            logger.error("查询Token发生错误---" + e);
+        //            apiResponse.setResCode(ErrorCodeConstant.INTERNAL_ERROR);
+        //            apiResponse.setResMsg(ErrorCodeUtil.getErrorMsg(ErrorCodeConstant.INTERNAL_ERROR));
+        //            response.setContentType("application/json");
+        //            response.getWriter().write(JsonUtil.pojo2Json(apiResponse));
+        //            return false;
+        //        }
         return true;
     }
 

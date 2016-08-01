@@ -1,9 +1,16 @@
 package com.wow.adminapi.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.wow.adminapi.constant.ErrorCodeConstant;
+import com.wow.common.request.ApiRequest;
 import com.wow.common.response.ApiResponse;
 import com.wow.common.response.CommonResponse;
 import com.wow.common.util.ErrorCodeUtil;
+import com.wow.user.service.SessionService;
+import com.wow.user.vo.response.TokenValidateResponse;
 
 /**
  * controller基类 用以处理controller中的一些通用方法
@@ -12,6 +19,11 @@ import com.wow.common.util.ErrorCodeUtil;
  * @version $Id: V1.0 2016年7月12日 上午10:56:17 Exp $
  */
 public class BaseController {
+
+    private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
+
+    @Autowired
+    private SessionService sessionService;
 
     /**
      * 
@@ -73,6 +85,30 @@ public class BaseController {
     public void removeDuplicateResponse(CommonResponse commonResponse) {
         commonResponse.setResCode(null);
         commonResponse.setResMsg(null);
+    }
+
+    /**
+     * 根据token和channel
+     * @param request
+     * @return 如果session依然有效,返回对应的end_user_id,否则返回null
+     */
+    public Integer getUserIdByTokenChannel(ApiRequest request) {
+        Integer endUserId = null;
+        try {
+            String token = request.getSessionToken();
+            byte channel = request.getChannel();
+            //check whether token is valid, by search it from redis or mysql
+            TokenValidateResponse tokenValidateResponse = sessionService.isValidSessionToken(token, channel);
+            if (tokenValidateResponse == null || !tokenValidateResponse.isValid()) {
+                logger.warn("session token is invalid:" + token);
+            } else {
+                endUserId = tokenValidateResponse.getEndUserId();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("查询Token发生错误---" + e);
+        }
+        return endUserId;
     }
 
 }
