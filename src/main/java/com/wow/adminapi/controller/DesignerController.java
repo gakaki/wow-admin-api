@@ -3,6 +3,7 @@ package com.wow.adminapi.controller;
 import com.wow.common.request.ApiRequest;
 import com.wow.common.response.ApiResponse;
 import com.wow.product.model.Designer;
+import com.wow.product.model.SimpleDesigner;
 import com.wow.product.service.DesignerService;
 import com.wow.product.vo.response.ProductDesignerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,23 +30,9 @@ public class DesignerController {
     @RequestMapping(value="/v1/designer/queryAllDesigner",method = RequestMethod.GET)
     public ApiResponse queryAllDesigner(ApiRequest apiRequest){
         ApiResponse apiResponse=new ApiResponse();
-        ProductDesignerResponse designers=designerService.getAllDesigners();
-        List<Designer> designerList=null;
-        List<Map<String,Object>> list=new ArrayList();
-        Map<String,Object> designer=null;
-        if(designers!=null){
-            designerList=designers.getDesignerList();
-            for(int i=0;i<designerList.size();i++){
-                designer=new HashMap<String,Object>();
-                designer.put("designerId",designerList.get(i).getId());
-                designer.put("designerName",designerList.get(i).getDesignerName());
-                list.add(designer);
-            }
-            designer=null;
-            designerList=null;
-            designers=null;
-        }
+        List<SimpleDesigner> list=designerService.getAllSimpleDesigners();
         apiResponse.setData(list);
+
         return apiResponse;
     }
 }
