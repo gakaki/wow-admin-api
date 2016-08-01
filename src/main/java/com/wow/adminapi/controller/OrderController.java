@@ -134,7 +134,7 @@ public class OrderController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/adminOrderDetail", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
+    @RequestMapping(value = "/orderDetail", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
     public ApiResponse getOrderDetail(ApiRequest request) {
         OrderDetailRequest orderDetailRequest = JsonUtil.fromJSON(request.getParamJson(), OrderDetailRequest.class);
         ApiResponse apiResponse = new ApiResponse();
