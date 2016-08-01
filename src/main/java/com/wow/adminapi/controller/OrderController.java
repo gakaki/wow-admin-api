@@ -70,7 +70,6 @@ public class OrderController extends BaseController {
                 setServiceErrorResponse(apiResponse, commonResponse);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error("订单发货错误---" + e);
             setInternalErrorResponse(apiResponse);
         }
@@ -110,7 +109,8 @@ public class OrderController extends BaseController {
             }
 
             //获取用户userId
-            Integer endUserId = getUserIdByTokenChannel(request);
+            Integer endUserId =120; 
+                    //getUserIdByTokenChannel(request);
             query.setEndUserId(endUserId);
 
             orderListResponse = adminOrderService.queryOrderListPage(query);
