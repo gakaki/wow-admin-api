@@ -4,8 +4,6 @@ import com.wow.adminapi.request.topic.TopicQueryRequest;
 import com.wow.common.request.ApiRequest;
 import com.wow.common.response.ApiResponse;
 import com.wow.common.util.JsonUtil;
-import com.wow.common.util.StringUtil;
-import com.wow.common.util.ValidatorUtil;
 import com.wow.product.service.TopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
