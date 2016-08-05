@@ -39,6 +39,7 @@ public class ProductController extends BaseController {
     public ApiResponse createProductInfo(ApiRequest apiRequest) {
         ApiResponse apiResponse = new ApiResponse();
         ProductCreateRequest productCreateRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), ProductCreateRequest.class);
+
         //判断json格式参数是否有误
         if (productCreateRequest == null) {
             setParamJsonParseErrorResponse(apiResponse);

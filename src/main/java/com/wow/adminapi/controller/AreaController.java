@@ -39,13 +39,13 @@ public class AreaController extends BaseController {
     public ApiResponse findNextLevelArea(ApiRequest apiRequest) {
     	ApiResponse apiResponse = new ApiResponse();
         AreaRequest areaRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), AreaRequest.class);
-        
+
     	//判断json格式参数是否有误
         if (areaRequest == null) {
             setParamJsonParseErrorResponse(apiResponse);
             return apiResponse;
         }
-        
+
         try {
         	AreaResponse areaResponse = new AreaResponse();
         	if(areaRequest.getAreaId() == null){
@@ -57,16 +57,16 @@ public class AreaController extends BaseController {
                 setServiceErrorResponse(apiResponse, areaResponse);
             }else{
             	List<Area> areaList = areaService.getNextLevelArea(areaRequest.getAreaId());
-                
+
             	areaResponse.setAreaList(areaList);
                 apiResponse.setData(areaResponse);
             }
-            
+
         } catch (Exception e) {
             logger.error("查找findNextLevelArea错误---" + e);
             setInternalErrorResponse(apiResponse);
         }
-        
+
         return apiResponse;
     }
 
@@ -76,21 +76,21 @@ public class AreaController extends BaseController {
      */
     @RequestMapping(value = "v1/area/firstlevel", method = RequestMethod.GET)
     public ApiResponse findFirstLevelArea() {
-    	
+
     	ApiResponse apiResponse = new ApiResponse();
-    	
+
     	try {
         	List<Area> areaList = areaService.getFirstLevelArea();
-            
+
         	AreaResponse areaResponse = new AreaResponse();
         	areaResponse.setAreaList(areaList);
             apiResponse.setData(areaResponse);
-            
+
         } catch (Exception e) {
             logger.error("查找findFirstLevelArea错误---" + e);
             setInternalErrorResponse(apiResponse);
         }
-        
+
         return apiResponse;
     }
 
