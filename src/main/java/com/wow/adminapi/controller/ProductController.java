@@ -1,5 +1,15 @@
 package com.wow.adminapi.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.wow.adminapi.request.product.ProductPageRequest;
+import com.wow.common.page.PageModel;
 import com.wow.common.request.ApiRequest;
 import com.wow.common.response.ApiResponse;
 import com.wow.common.response.CommonResponse;
@@ -9,13 +19,7 @@ import com.wow.common.util.StringUtil;
 import com.wow.common.util.ValidatorUtil;
 import com.wow.product.service.ProductService;
 import com.wow.product.vo.request.ProductCreateRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.wow.product.vo.response.ProductPageResponse;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -57,6 +61,49 @@ public class ProductController extends BaseController {
         } catch (Exception e) {
             logger.error("创建产品发生错误---" + e);
             e.printStackTrace();
+            setInternalErrorResponse(apiResponse);
+        }
+        return apiResponse;
+    }
+
+
+    /**
+     * 查询产品分页列表
+     * @param apiRequest
+     * @return
+     */
+    @RequestMapping(value = "/v1/product/pageList", method = RequestMethod.GET)
+    public ApiResponse getProductPageList(ApiRequest apiRequest) {
+        logger.info("start to get product on page");
+        ApiResponse apiResponse = new ApiResponse();
+
+        ProductPageRequest productPageRequest = JsonUtil
+                .fromJSON(apiRequest.getParamJson(), ProductPageRequest.class);
+        //判断json格式参数是否有误
+        if (productPageRequest == null) {
+            setParamJsonParseErrorResponse(apiResponse);
+            return apiResponse;
+        }
+        
+        PageModel pageModel = new PageModel();
+        if (productPageRequest.getPageSize() != null) {
+        	pageModel.setShowCount(productPageRequest.getPageSize());
+        }
+        if (productPageRequest.getCurrentPage() != null) {
+        	pageModel.setCurrentPage(productPageRequest.getCurrentPage());
+        }
+        
+        try {
+        	ProductPageResponse productPageResponse = productService.getProductListPage(pageModel);       	
+        	
+            //如果处理失败 则返回错误信息
+            if (ErrorCodeUtil.isFailedResponse(productPageResponse.getResCode())) {
+                setServiceErrorResponse(apiResponse, productPageResponse);
+            } else {
+                apiResponse.setData(productPageResponse);
+            }
+        } catch (Exception e) {
+            logger.error("查找product错误---" + e);
             setInternalErrorResponse(apiResponse);
         }
         return apiResponse;
