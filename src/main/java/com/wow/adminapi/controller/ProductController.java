@@ -92,6 +92,10 @@ public class ProductController extends BaseController {
         }
         if (productPageRequest.getCurrentPage() != null) {
         	pageModel.setCurrentPage(productPageRequest.getCurrentPage());
+        	//仅在第一页时获取相应的分页记录
+            if (productPageRequest.getCurrentPage() == 1) {
+            	pageModel.setIsPage(true);
+            }
         }
         
         try {
