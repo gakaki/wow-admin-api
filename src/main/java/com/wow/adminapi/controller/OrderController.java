@@ -108,11 +108,6 @@ public class OrderController extends BaseController {
                 query.setEndDateFormat(DateUtil.setEndDate(orderListRequest.getEndDate()));
             }
 
-            //获取用户userId
-            Integer endUserId =120; 
-                    //getUserIdByTokenChannel(request);
-            query.setEndUserId(endUserId);
-
             orderListResponse = adminOrderService.queryOrderListPage(query);
             //如果处理失败 则返回错误信息
             if (ErrorCodeUtil.isFailedResponse(orderListResponse.getResCode())) {
