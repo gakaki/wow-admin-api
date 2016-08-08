@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wow.adminapi.request.product.ProductPageRequest;
 import com.wow.common.page.PageModel;
 import com.wow.common.request.ApiRequest;
 import com.wow.common.response.ApiResponse;
@@ -19,6 +18,7 @@ import com.wow.common.util.StringUtil;
 import com.wow.common.util.ValidatorUtil;
 import com.wow.product.service.ProductService;
 import com.wow.product.vo.request.ProductCreateRequest;
+import com.wow.product.vo.request.ProductPageRequest;
 import com.wow.product.vo.response.ProductPageResponse;
 
 @RestController
@@ -97,6 +97,7 @@ public class ProductController extends BaseController {
             	pageModel.setIsPage(true);
             }
         }
+        pageModel.setModel(productPageRequest);
         
         try {
         	ProductPageResponse productPageResponse = productService.getProductListPage(pageModel);       	
