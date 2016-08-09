@@ -76,4 +76,30 @@ public class CategoryController extends BaseController {
         return apiResponse;
     }
 
+    @RequestMapping(value = "/v1/category/path-category", method = RequestMethod.GET)
+    public ApiResponse getCategoryPath(ApiRequest apiRequest) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        CategoryQueryRequest categoryQueryRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), CategoryQueryRequest.class);
+        if (categoryQueryRequest == null) {
+            setParamJsonParseErrorResponse(apiResponse);
+            return apiResponse;
+        }
+
+        try {
+            CategoryListResponse categoryListResponse = categoryService.getCategoryPath(categoryQueryRequest.getCategoryId());
+
+            if (!isServiceCallSuccess(categoryListResponse.getResCode())) {
+                setServiceErrorResponse(apiResponse, categoryListResponse);
+            } else {
+                apiResponse.setData(categoryListResponse);
+            }
+        } catch (Exception e) {
+            logger.error("查询类目路径错误---" + e);
+            e.printStackTrace();
+            setInternalErrorResponse(apiResponse);
+        }
+
+        return apiResponse;
+    }
 }
