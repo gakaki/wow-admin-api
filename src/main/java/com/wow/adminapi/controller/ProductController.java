@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wow.adminapi.request.product.ProductQueryRequest;
 import com.wow.common.page.PageModel;
 import com.wow.common.request.ApiRequest;
 import com.wow.common.response.ApiResponse;
@@ -16,9 +17,11 @@ import com.wow.common.util.ErrorCodeUtil;
 import com.wow.common.util.JsonUtil;
 import com.wow.common.util.StringUtil;
 import com.wow.common.util.ValidatorUtil;
+import com.wow.product.model.Product;
 import com.wow.product.service.ProductService;
 import com.wow.product.vo.request.ProductCreateRequest;
 import com.wow.product.vo.request.ProductPageRequest;
+import com.wow.product.vo.response.ProductDetailResponse;
 import com.wow.product.vo.response.ProductPageResponse;
 
 @RestController
@@ -64,6 +67,38 @@ public class ProductController extends BaseController {
             e.printStackTrace();
             setInternalErrorResponse(apiResponse);
         }
+        return apiResponse;
+    }
+
+    @RequestMapping(value = "/v1/product/detail", method = RequestMethod.GET)
+    public ApiResponse getProductDetail(ApiRequest apiRequest) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        ProductQueryRequest productQueryRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), ProductQueryRequest.class);
+        if (productQueryRequest == null) {
+            setParamJsonParseErrorResponse(apiResponse);
+            return apiResponse;
+        }
+
+        String errorMsg = ValidatorUtil.getError(productQueryRequest);
+        if (StringUtil.isNotEmpty(errorMsg)) {
+            setInvalidParameterResponse(apiResponse, errorMsg);
+            return apiResponse;
+        }
+
+        try {
+            ProductDetailResponse productDetailResponse = productService.getProductDetail(productQueryRequest.getProductId());
+            if (ErrorCodeUtil.isFailedResponse(productDetailResponse.getResCode())) {
+                setServiceErrorResponse(apiResponse, productDetailResponse);
+            } else {
+                apiResponse.setData(productDetailResponse);
+            }
+        } catch (Exception e) {
+            logger.error("查询产品详细信息错误---" + e);
+            e.printStackTrace();
+            setInternalErrorResponse(apiResponse);
+        }
+
         return apiResponse;
     }
 
