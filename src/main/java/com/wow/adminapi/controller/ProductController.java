@@ -100,8 +100,7 @@ public class ProductController extends BaseController {
                 apiResponse.setData(productDetailResponse);
             }
         } catch (Exception e) {
-            logger.error("查询产品详细信息错误---" + e);
-            e.printStackTrace();
+            logger.error("查询产品详细信息错误---", e);
             setInternalErrorResponse(apiResponse);
         }
 
