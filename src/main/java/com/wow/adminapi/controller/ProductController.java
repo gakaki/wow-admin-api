@@ -21,6 +21,7 @@ import com.wow.product.model.Product;
 import com.wow.product.service.ProductService;
 import com.wow.product.vo.request.ProductCreateRequest;
 import com.wow.product.vo.request.ProductPageRequest;
+import com.wow.product.vo.request.ProductUpdateRequest;
 import com.wow.product.vo.response.ProductDetailResponse;
 import com.wow.product.vo.response.ProductPageResponse;
 
@@ -101,6 +102,35 @@ public class ProductController extends BaseController {
         } catch (Exception e) {
             logger.error("查询产品详细信息错误---" + e);
             e.printStackTrace();
+            setInternalErrorResponse(apiResponse);
+        }
+
+        return apiResponse;
+    }
+
+    @RequestMapping(value = "/v1/product/info", method = RequestMethod.POST)
+    public ApiResponse updateProductInfo(ApiRequest apiRequest) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        ProductUpdateRequest productUpdateRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), ProductUpdateRequest.class);
+        if (productUpdateRequest == null) {
+            setParamJsonParseErrorResponse(apiResponse);
+            return apiResponse;
+        }
+
+        String errorMsg = ValidatorUtil.getError(productUpdateRequest);
+        if (StringUtil.isNotEmpty(errorMsg)) {
+            setInvalidParameterResponse(apiResponse, errorMsg);
+            return apiResponse;
+        }
+
+        try {
+            CommonResponse commonResponse = productService.updateProductInfo(productUpdateRequest);
+            if (ErrorCodeUtil.isFailedResponse(commonResponse.getResCode())) {
+                setServiceErrorResponse(apiResponse, commonResponse);
+            }
+        } catch (Exception e) {
+            logger.error("更新产品描述信息错误---", e);
             setInternalErrorResponse(apiResponse);
         }
 
