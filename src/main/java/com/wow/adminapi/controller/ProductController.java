@@ -70,6 +70,11 @@ public class ProductController extends BaseController {
         return apiResponse;
     }
 
+    /**
+     * 查询产品的详细信息,包括基本信息、系列产品和图文信息。
+     * @param apiRequest
+     * @return
+     */
     @RequestMapping(value = "/v1/product/detail", method = RequestMethod.GET)
     public ApiResponse getProductDetail(ApiRequest apiRequest) {
         ApiResponse apiResponse = new ApiResponse();
