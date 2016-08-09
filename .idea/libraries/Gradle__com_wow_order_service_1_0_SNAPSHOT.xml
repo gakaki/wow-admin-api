@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: com.wow:order-service:1.0-SNAPSHOT">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/wow/order-service/1.0-SNAPSHOT/order-service-1.0-SNAPSHOT.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: com.wow:stock-service:1.0-SNAPSHOT">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/wow/stock-service/1.0-SNAPSHOT/stock-service-1.0-SNAPSHOT.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
