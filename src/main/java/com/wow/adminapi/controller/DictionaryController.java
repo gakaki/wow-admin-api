@@ -40,70 +40,6 @@ public class DictionaryController extends BaseController{
     @Autowired
     private DictionaryService dictionaryService;
 
-    @RequestMapping(value="/v1/dictionary/add",method = RequestMethod.POST)
-    public ApiResponse addDictionary(ApiRequest apiRequest){
-        ApiResponse apiResponse = new ApiResponse();
-        DictionaryRequest dictionaryRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), DictionaryRequest.class);
-        try {
-            Dictionary dictionary=new Dictionary();
-            BeanUtil.copyProperties(dictionaryRequest,dictionary);
-            int count=dictionaryService.createDictionary(dictionary);
-            CommonResponse commonResponse = new CommonResponse();
-            if(count==0) {
-                commonResponse.setResCode("4000");
-                commonResponse.setResMsg("字典信息增加失败");
-            }
-            apiResponse.setData(commonResponse);
-        } catch (Exception e) {
-            logger.error("字典信息增加addDictionary错误---" + e);
-            setInternalErrorResponse(apiResponse);
-        }
-        return apiResponse;
-    }
-
-    @RequestMapping(value="/v1/dictionary/del",method = RequestMethod.POST)
-    public ApiResponse delDictionary(ApiRequest apiRequest){
-        ApiResponse apiResponse = new ApiResponse();
-        DictionaryRequest dictionaryRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), DictionaryRequest.class);
-        try {
-            Dictionary dictionary=new Dictionary();
-            BeanUtil.copyProperties(dictionaryRequest,dictionary);
-            dictionary.setIsValid(false);
-            int count=dictionaryService.updateDictionary(dictionary,dictionaryRequest);
-            CommonResponse commonResponse = new CommonResponse();
-            if(count==0) {
-                commonResponse.setResCode("4000");
-                commonResponse.setResMsg("字典信息删除失败");
-            }
-            apiResponse.setData(commonResponse);
-        } catch (Exception e) {
-            logger.error("字典信息删除delDictionary错误---" + e);
-            setInternalErrorResponse(apiResponse);
-        }
-        return apiResponse;
-    }
-
-    @RequestMapping(value="/v1/dictionary/update",method = RequestMethod.POST)
-    public ApiResponse updateDictionary(ApiRequest apiRequest){
-        ApiResponse apiResponse = new ApiResponse();
-        DictionaryRequest dictionaryRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), DictionaryRequest.class);
-        try {
-            Dictionary dictionary=new Dictionary();
-            BeanUtil.copyProperties(dictionaryRequest,dictionary);
-            int count=dictionaryService.updateDictionary(dictionary,dictionaryRequest);
-            CommonResponse commonResponse = new CommonResponse();
-            if(count==0) {
-                commonResponse.setResCode("4000");
-                commonResponse.setResMsg("字典信息更新失败");
-            }
-            apiResponse.setData(commonResponse);
-        } catch (Exception e) {
-            logger.error("字典信息更新updateDictionary错误---" + e);
-            setInternalErrorResponse(apiResponse);
-        }
-        return apiResponse;
-    }
-
     /**
      *
      * @param apiRequest
@@ -137,7 +73,7 @@ public class DictionaryController extends BaseController{
         		for(Dictionary dictionary:dictionaryList){
         			DictionaryVo dv = new DictionaryVo();
         			dv.setKeyValue(dictionary.getKeyValue());
-        			dv.setKeyName(dictionary.getKeyName());
+        			dv.setKeyId(dictionary.getKeyId());
         			
         			dictionaryVoList.add(dv);
         		}
