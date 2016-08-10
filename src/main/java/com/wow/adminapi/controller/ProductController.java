@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,6 +67,42 @@ public class ProductController extends BaseController {
         } catch (Exception e) {
             logger.error("创建产品发生错误---" + e);
             e.printStackTrace();
+            setInternalErrorResponse(apiResponse);
+        }
+        return apiResponse;
+    }
+
+    @RequestMapping(value = "/v1/product/delete", method = RequestMethod.POST)
+    public ApiResponse deleteProduct(ApiRequest apiRequest) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        ProductQueryRequest productQueryRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), ProductQueryRequest.class);
+
+        if (productQueryRequest == null) {
+            setParamJsonParseErrorResponse(apiResponse);
+            return apiResponse;
+        }
+
+        String errorMsg = ValidatorUtil.getError(productQueryRequest);
+        if (StringUtil.isNotEmpty(errorMsg)) {
+            setInvalidParameterResponse(apiResponse, errorMsg);
+            return apiResponse;
+        }
+
+        return deleteProductRest(productQueryRequest.getProductId());
+    }
+
+    @RequestMapping(value = "/v1/products/{productId}", method = RequestMethod.DELETE)
+    private ApiResponse deleteProductRest(@PathVariable Integer productId) {
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            CommonResponse commonResponse = productService.deleteProduct(productId);
+
+            if (ErrorCodeUtil.isFailedResponse(commonResponse.getResCode())) {
+                setServiceErrorResponse(apiResponse, commonResponse);
+            }
+        } catch (Exception e) {
+            logger.error("删除产品错误---", e);
             setInternalErrorResponse(apiResponse);
         }
         return apiResponse;
