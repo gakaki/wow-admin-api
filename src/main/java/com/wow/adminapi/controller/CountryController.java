@@ -31,7 +31,7 @@ public class CountryController extends BaseController{
     @Autowired
     private CountryService countryService;
 
-    @RequestMapping(value="/v1/queryAllCountries",method = RequestMethod.GET)
+    @RequestMapping(value="/v1/country/queryAllCountries",method = RequestMethod.GET)
     public ApiResponse getCountryList(ApiRequest apiRequest){
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(countryService.queryAllCountry());
