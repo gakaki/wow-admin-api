@@ -23,6 +23,7 @@ import com.wow.product.service.ProductService;
 import com.wow.product.vo.request.ProductCreateRequest;
 import com.wow.product.vo.request.ProductPageRequest;
 import com.wow.product.vo.request.ProductUpdateRequest;
+import com.wow.product.vo.request.ProductUpdateSerialsRequest;
 import com.wow.product.vo.response.ProductDetailResponse;
 import com.wow.product.vo.response.ProductPageResponse;
 
@@ -167,6 +168,35 @@ public class ProductController extends BaseController {
             }
         } catch (Exception e) {
             logger.error("更新产品描述信息错误---", e);
+            setInternalErrorResponse(apiResponse);
+        }
+
+        return apiResponse;
+    }
+
+    @RequestMapping(value = "/v1/product/serials", method = RequestMethod.POST)
+    public ApiResponse updateProductSerials(ApiRequest apiRequest) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        ProductUpdateSerialsRequest productUpdateSerialsRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), ProductUpdateSerialsRequest.class);
+        if (productUpdateSerialsRequest == null) {
+            setParamJsonParseErrorResponse(apiResponse);
+            return apiResponse;
+        }
+
+        String errorMsg = ValidatorUtil.getError(productUpdateSerialsRequest);
+        if (StringUtil.isNotEmpty(errorMsg)) {
+            setInvalidParameterResponse(apiResponse, errorMsg);
+            return apiResponse;
+        }
+
+        try {
+            CommonResponse commonResponse = productService.updateProductSerials(productUpdateSerialsRequest);
+            if (ErrorCodeUtil.isFailedResponse(commonResponse.getResCode())) {
+                setServiceErrorResponse(apiResponse, commonResponse);
+            }
+        } catch (Exception e) {
+            logger.error("更新子产品信息错误---", e);
             setInternalErrorResponse(apiResponse);
         }
 
