@@ -6,16 +6,16 @@ public class DictionaryVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String keyName;
+    private Integer keyId;
 
     private String keyValue;
 
-	public String getKeyName() {
-		return keyName;
+	public Integer getKeyId() {
+		return keyId;
 	}
 
-	public void setKeyName(String keyName) {
-		this.keyName = keyName;
+	public void setKeyId(Integer keyId) {
+		this.keyId = keyId;
 	}
 
 	public String getKeyValue() {
