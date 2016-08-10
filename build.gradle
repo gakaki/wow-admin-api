@@ -21,7 +21,6 @@ configurations {
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'idea'
-apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'maven-publish'
 apply plugin: 'org.hidetake.ssh'
@@ -42,6 +41,13 @@ repositories {
 uploadArchives {
     repositories {
         mavenDeployer {
+            repository(url: "${nexusUrl}/content/repositories/releases") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            snapshotRepository(url: "${nexusUrl}/content/repositories/snapshots") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+
             repository(url: "${nexusUrl}/content/repositories/releases") {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
@@ -154,8 +160,20 @@ remotes {
         user = 'root'
         password = " "
     }
+    stagingServer {
+        host = '114.55.132.84'
+        user = 'root'
+        identity = file("${System.properties['user.home']}${File.separator}.ssh${File.separator}id_rsa")
+    }
+    productionServer {
+        host = '114.55.176.124'
+        user = 'root'
+        identity = file("id_rsa.txt")
+    }
 }
-
+ssh.settings {
+    knownHosts = allowAnyHosts
+}
 springBoot {
     executable = true
 }
@@ -168,6 +186,28 @@ task deploy << {
             execute 'systemctl daemon-reload'
             execute 'systemctl stop wowdsgn-admin.service'
             execute 'systemctl start wowdsgn-admin.service'
+        }
+    }
+}
+task deploy_staging << {
+
+    ssh.run {
+        session(remotes.stagingServer) {
+            put from: 'build/libs/admin-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/admin-api/admin-api'
+            execute 'chmod -R 777 /wowdsgn/'
+//            execute 'cp -a /wowdsgn/config/application.properties /wowdsgn/admin-api/application.properties'
+            execute 'systemctl restart admin-api.service'
+        }
+    }
+}
+task deploy_production << {
+
+    ssh.run {
+        session(remotes.productionServer) {
+            put from: 'build/libs/admin-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/admin-api/admin-api'
+            execute 'chmod -R 777 /wowdsgn/'
+//            execute 'cp -a /wowdsgn/config/application.properties /wowdsgn/admin-api/application.properties'
+            execute 'systemctl restart admin-api.service'
         }
     }
 }
