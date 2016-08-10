@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ import com.wow.product.model.Product;
 import com.wow.product.service.ProductService;
 import com.wow.product.vo.request.ProductCreateRequest;
 import com.wow.product.vo.request.ProductPageRequest;
+import com.wow.product.vo.request.ProductUpdateRequest;
 import com.wow.product.vo.response.ProductDetailResponse;
 import com.wow.product.vo.response.ProductPageResponse;
 
@@ -70,6 +72,42 @@ public class ProductController extends BaseController {
         return apiResponse;
     }
 
+    @RequestMapping(value = "/v1/product/delete", method = RequestMethod.POST)
+    public ApiResponse deleteProduct(ApiRequest apiRequest) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        ProductQueryRequest productQueryRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), ProductQueryRequest.class);
+
+        if (productQueryRequest == null) {
+            setParamJsonParseErrorResponse(apiResponse);
+            return apiResponse;
+        }
+
+        String errorMsg = ValidatorUtil.getError(productQueryRequest);
+        if (StringUtil.isNotEmpty(errorMsg)) {
+            setInvalidParameterResponse(apiResponse, errorMsg);
+            return apiResponse;
+        }
+
+        return deleteProductRest(productQueryRequest.getProductId());
+    }
+
+    @RequestMapping(value = "/v1/products/{productId}", method = RequestMethod.DELETE)
+    private ApiResponse deleteProductRest(@PathVariable Integer productId) {
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            CommonResponse commonResponse = productService.deleteProduct(productId);
+
+            if (ErrorCodeUtil.isFailedResponse(commonResponse.getResCode())) {
+                setServiceErrorResponse(apiResponse, commonResponse);
+            }
+        } catch (Exception e) {
+            logger.error("删除产品错误---", e);
+            setInternalErrorResponse(apiResponse);
+        }
+        return apiResponse;
+    }
+
     /**
      * 查询产品的详细信息,包括基本信息、系列产品和图文信息。
      * @param apiRequest
@@ -99,8 +137,36 @@ public class ProductController extends BaseController {
                 apiResponse.setData(productDetailResponse);
             }
         } catch (Exception e) {
-            logger.error("查询产品详细信息错误---" + e);
-            e.printStackTrace();
+            logger.error("查询产品详细信息错误---", e);
+            setInternalErrorResponse(apiResponse);
+        }
+
+        return apiResponse;
+    }
+
+    @RequestMapping(value = "/v1/product/info", method = RequestMethod.POST)
+    public ApiResponse updateProductInfo(ApiRequest apiRequest) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        ProductUpdateRequest productUpdateRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), ProductUpdateRequest.class);
+        if (productUpdateRequest == null) {
+            setParamJsonParseErrorResponse(apiResponse);
+            return apiResponse;
+        }
+
+        String errorMsg = ValidatorUtil.getError(productUpdateRequest);
+        if (StringUtil.isNotEmpty(errorMsg)) {
+            setInvalidParameterResponse(apiResponse, errorMsg);
+            return apiResponse;
+        }
+
+        try {
+            CommonResponse commonResponse = productService.updateProductInfo(productUpdateRequest);
+            if (ErrorCodeUtil.isFailedResponse(commonResponse.getResCode())) {
+                setServiceErrorResponse(apiResponse, commonResponse);
+            }
+        } catch (Exception e) {
+            logger.error("更新产品描述信息错误---", e);
             setInternalErrorResponse(apiResponse);
         }
 
