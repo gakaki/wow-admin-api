@@ -23,6 +23,7 @@ import com.wow.product.service.ProductService;
 import com.wow.product.vo.request.ProductCreateRequest;
 import com.wow.product.vo.request.ProductPageRequest;
 import com.wow.product.vo.request.ProductUpdateRequest;
+import com.wow.product.vo.request.ProductUpdateImagesRequest;
 import com.wow.product.vo.request.ProductUpdateSerialsRequest;
 import com.wow.product.vo.response.ProductDetailResponse;
 import com.wow.product.vo.response.ProductPageResponse;
@@ -202,6 +203,36 @@ public class ProductController extends BaseController {
 
         return apiResponse;
     }
+
+    @RequestMapping(value = "/v1/product/images", method = RequestMethod.POST)
+    public ApiResponse updateProductImages(ApiRequest apiRequest) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        ProductUpdateImagesRequest jsonRequest = JsonUtil.fromJSON(apiRequest.getParamJson(), ProductUpdateImagesRequest.class);
+        if (jsonRequest == null) {
+            setParamJsonParseErrorResponse(apiResponse);
+            return apiResponse;
+        }
+
+        String errorMsg = ValidatorUtil.getError(jsonRequest);
+        if (StringUtil.isNotEmpty(errorMsg)) {
+            setInvalidParameterResponse(apiResponse, errorMsg);
+            return apiResponse;
+        }
+
+        try {
+            CommonResponse commonResponse = productService.updateProductImages(jsonRequest);
+            if (ErrorCodeUtil.isFailedResponse(commonResponse.getResCode())) {
+                setServiceErrorResponse(apiResponse, commonResponse);
+            }
+        } catch (Exception e) {
+            logger.error("更新产品的图片信息错误---", e);
+            setInternalErrorResponse(apiResponse);
+        }
+
+        return apiResponse;
+    }
+
 
 
     /**
