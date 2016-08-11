@@ -87,7 +87,7 @@ public class AreaController extends BaseController {
             apiResponse.setData(areaResponse);
 
         } catch (Exception e) {
-            logger.error("查找findFirstLevelArea错误---" + e);
+            logger.error("查找findFirstLevelArea错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
 

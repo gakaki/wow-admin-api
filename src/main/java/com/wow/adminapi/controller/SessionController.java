@@ -57,7 +57,7 @@ public class SessionController extends BaseController {
                 apiResponse.setData(loginResponse);
             }
         } catch (Exception e) {
-            logger.error("login发生错误---" + e);
+            logger.error("login发生错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
         return apiResponse;
@@ -89,7 +89,7 @@ public class SessionController extends BaseController {
                 apiResponse.setData(logoutResponse.isSuccess());
             }
         } catch (Exception e) {
-            logger.error("logout发生错误---" + e);
+            logger.error("logout发生错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
         return apiResponse;

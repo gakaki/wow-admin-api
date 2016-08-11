@@ -44,7 +44,7 @@ public class CategoryController extends BaseController {
                 apiResponse.setData(categoryListResponse.getCategoryList());
             }
         } catch (Exception e) {
-            logger.error("查找一级类目发生错误---" + e);
+            logger.error("查找一级类目发生错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
         return apiResponse;
@@ -70,7 +70,7 @@ public class CategoryController extends BaseController {
                 apiResponse.setData(categoryListResponse.getCategoryList());
             }
         } catch (Exception e) {
-            logger.error("查找子类目发生错误---" + e);
+            logger.error("查找子类目发生错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
         return apiResponse;
@@ -95,7 +95,7 @@ public class CategoryController extends BaseController {
                 apiResponse.setData(categoryListResponse);
             }
         } catch (Exception e) {
-            logger.error("查询类目路径错误---" + e);
+            logger.error("查询类目路径错误---" , e);
             e.printStackTrace();
             setInternalErrorResponse(apiResponse);
         }

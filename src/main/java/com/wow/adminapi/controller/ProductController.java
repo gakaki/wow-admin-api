@@ -65,7 +65,7 @@ public class ProductController extends BaseController {
                 setServiceErrorResponse(apiResponse, commonResponse);
             }
         } catch (Exception e) {
-            logger.error("创建产品发生错误---" + e);
+            logger.error("创建产品发生错误---" , e);
             e.printStackTrace();
             setInternalErrorResponse(apiResponse);
         }
@@ -215,7 +215,7 @@ public class ProductController extends BaseController {
                 apiResponse.setData(productPageResponse);
             }
         } catch (Exception e) {
-            logger.error("查找product错误---" + e);
+            logger.error("查找product错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
         return apiResponse;

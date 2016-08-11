@@ -83,7 +83,7 @@ public class DictionaryController extends BaseController{
         	dictionaryVoResponse.setDictionaryList(dictionaryMap);
             apiResponse.setData(dictionaryVoResponse.getDictionaryList());
         } catch (Exception e) {
-            logger.error("查找国家信息错误---" + e);
+            logger.error("查找国家信息错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
 

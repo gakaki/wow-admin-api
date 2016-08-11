@@ -54,7 +54,7 @@ public class EmployeeController extends BaseController {
                 apiResponse.setData(employeeResponse.getEmployee());
             }
         } catch (Exception e) {
-            logger.error("根据ID查找用户错误---" + e);
+            logger.error("根据ID查找用户错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
         logger.info("根据ID查询用户,返回结果:" + JsonUtil.pojo2Json(apiResponse));
@@ -87,7 +87,7 @@ public class EmployeeController extends BaseController {
                 apiResponse.setData(registerResponse.getEmployeeId());
             }
         } catch (Exception e) {
-            logger.error("注册发生错误---" + e);
+            logger.error("注册发生错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
         logger.info("用户注册,返回结果:" + JsonUtil.pojo2Json(apiResponse));
@@ -120,7 +120,7 @@ public class EmployeeController extends BaseController {
                 apiResponse.setData(employeeUpdateResponse.isSuccess());
             }
         } catch (Exception e) {
-            logger.error("修改用户发生错误---" + e);
+            logger.error("修改用户发生错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
         return apiResponse;
@@ -153,7 +153,7 @@ public class EmployeeController extends BaseController {
                 apiResponse.setData(employeeCheckResponse.isExistedEmployee());
             }
         } catch (Exception e) {
-            logger.error("根据手机号判断用户是否存在发生错误---" + e);
+            logger.error("根据手机号判断用户是否存在发生错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
         return apiResponse;
@@ -178,7 +178,7 @@ public class EmployeeController extends BaseController {
                 apiResponse.setData(employeeCheckResponse.isExistedEmployee());
             }
         } catch (Exception e) {
-            logger.error("根据用户名判断用户是否存在发生错误---" + e);
+            logger.error("根据用户名判断用户是否存在发生错误---" , e);
             setInternalErrorResponse(apiResponse);
         }
 
