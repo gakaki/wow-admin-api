@@ -155,17 +155,17 @@ task dbgen << {
 
 
 remotes {
-    intranetServer {
+    internal {
         host = '10.0.60.121'
         user = 'root'
         password = " "
     }
-    stagingServer {
+    staging {
         host = '114.55.132.84'
         user = 'root'
         identity = file("${System.properties['user.home']}${File.separator}.ssh${File.separator}id_rsa")
     }
-    productionServer {
+    production {
         host = '114.55.176.124'
         user = 'root'
         identity = file("id_rsa.txt")
@@ -178,36 +178,34 @@ springBoot {
     executable = true
 }
 
-task deploy << {
+
+def deploy_mobile_task(env,type="mobile-api") {
     ssh.run {
-        session(remotes.intranetServer) {
-            put from: 'build/libs/admin-api-1.0-SNAPSHOT.jar', into: '/data/server/'
+        session(remotes[env]) {
+            put from: 'build/libs/mobile-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/mobile-api/mobile-api'
             execute 'chmod -R 777 /data/server/'
             execute 'systemctl daemon-reload'
-            execute 'systemctl stop wowdsgn-admin.service'
-            execute 'systemctl start wowdsgn-admin.service'
+            execute 'systemctl restart admin-api.service'
         }
     }
+}
+def deploy_admin_task(env) {
+    ssh.run {
+        session(remotes[env]) {
+            put from: 'build/libs/admin-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/admin-api/admin-api'
+            execute 'chmod -R 777 /data/server/'
+            execute 'systemctl daemon-reload'
+            execute 'systemctl restart admin-api.service'
+        }
+    }
+}
+
+task deploy_internal << {
+    deploy_admin_task("internal")
 }
 task deploy_staging << {
-
-    ssh.run {
-        session(remotes.stagingServer) {
-            put from: 'build/libs/admin-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/admin-api/admin-api'
-            execute 'chmod -R 777 /wowdsgn/'
-//            execute 'cp -a /wowdsgn/config/application.properties /wowdsgn/admin-api/application.properties'
-            execute 'systemctl restart admin-api.service'
-        }
-    }
+    deploy_admin_task("staging")
 }
 task deploy_production << {
-
-    ssh.run {
-        session(remotes.productionServer) {
-            put from: 'build/libs/admin-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/admin-api/admin-api'
-            execute 'chmod -R 777 /wowdsgn/'
-//            execute 'cp -a /wowdsgn/config/application.properties /wowdsgn/admin-api/application.properties'
-            execute 'systemctl restart admin-api.service'
-        }
-    }
+    deploy_admin_task("production")
 }
