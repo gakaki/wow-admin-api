@@ -178,22 +178,11 @@ springBoot {
     executable = true
 }
 
-
-def deploy_mobile_task(env,type="mobile-api") {
-    ssh.run {
-        session(remotes[env]) {
-            put from: 'build/libs/mobile-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/mobile-api/mobile-api'
-            execute 'chmod -R 777 /data/server/'
-            execute 'systemctl daemon-reload'
-            execute 'systemctl restart admin-api.service'
-        }
-    }
-}
 def deploy_admin_task(env) {
     ssh.run {
         session(remotes[env]) {
             put from: 'build/libs/admin-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/admin-api/admin-api'
-            execute 'chmod -R 777 /data/server/'
+            execute 'chmod -R 777 /wowdsgn/admin-api/'
             execute 'systemctl daemon-reload'
             execute 'systemctl restart admin-api.service'
         }
