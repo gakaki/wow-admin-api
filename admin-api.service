@@ -1,0 +1,12 @@
+[Unit]
+Description=admin-api
+After=syslog.target
+
+[Service]
+User=root
+ExecStart=/usr/local/java/bin/java -jar -Djava.security.egd=file:/dev/./urandom /wowdsgn/admin-api/admin-api
+SuccessExitStatus=143
+WorkingDirectory=/wowdsgn/admin-api
+
+[Install]
+WantedBy=multi-user.target
