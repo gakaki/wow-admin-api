@@ -155,7 +155,7 @@ task dbgen << {
 
 
 remotes {
-    internal {
+    test {
         host = '10.0.60.121'
         user = 'root'
         password = " "
@@ -189,8 +189,8 @@ def deploy_admin_task(env) {
     }
 }
 
-task deploy_internal << {
-    deploy_admin_task("internal")
+task deploy_test << {
+    deploy_admin_task("test")
 }
 task deploy_staging << {
     deploy_admin_task("staging")
