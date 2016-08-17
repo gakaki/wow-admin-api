@@ -178,6 +178,30 @@ springBoot {
     executable = true
 }
 
+
+def deploy_adminweb_task(env) {
+    ssh.run {
+        session(remotes[env]) {
+            def res = execute('cd /wowdsgn/admin-web && git reset --hard && git pull', pty: true)
+            if ( res.contains("Already up-to-date.") )
+                println "admin-web update success"
+            else
+                println "admin-web update fail"
+
+        }
+    }
+}
+
+def deploy_mobile_task(env,type="mobile-api") {
+    ssh.run {
+        session(remotes[env]) {
+            put from: 'build/libs/mobile-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/mobile-api/mobile-api'
+            execute 'chmod -R 777 /wowdsgn'
+            execute 'systemctl daemon-reload'
+            execute 'systemctl restart mobile-api.service'
+        }
+    }
+}
 def deploy_admin_task(env) {
     ssh.run {
         session(remotes[env]) {
@@ -197,4 +221,16 @@ task deploy_staging << {
 }
 task deploy_production << {
     deploy_admin_task("production")
+}
+
+
+
+task deploy_adminweb_test << {
+    deploy_adminweb_task("test")
+}
+task deploy_adminweb_staging << {
+    deploy_adminweb_task("staging")
+}
+task deploy_adminweb_production << {
+    deploy_adminweb_task("production")
 }
