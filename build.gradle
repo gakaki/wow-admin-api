@@ -181,7 +181,7 @@ springBoot {
 def deploy_admin_task(env) {
     ssh.run {
         session(remotes[env]) {
-            put from: 'build/libs/admin-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/admin-api/admin-api'
+            put from: 'build/libs/admin-api-1.0-SNAPSHOT.jar', into: '/wowdsgn/admin-api/'
             execute 'chmod -R 777 /wowdsgn/admin-api/'
             execute 'systemctl daemon-reload'
             execute 'systemctl restart admin-api.service'

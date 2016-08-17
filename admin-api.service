@@ -4,7 +4,7 @@ After=syslog.target
 
 [Service]
 User=root
-ExecStart=/usr/local/java/bin/java -jar -Djava.security.egd=file:/dev/./urandom /wowdsgn/admin-api/admin-api
+ExecStart=/usr/local/java/bin/java -jar -Djava.security.egd=file:/dev/./urandom /wowdsgn/admin-api/admin-api-1.0-SNAPSHOT.jar
 SuccessExitStatus=143
 WorkingDirectory=/wowdsgn/admin-api
 
